@@ -2,12 +2,10 @@
 
 import 'package:fire_mail/Screens/home_screen.dart';
 import 'package:fire_mail/Services.dart/google_auth_api.dart';
-import 'package:fire_mail/provider_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   static String id = 'LoginScreen';
@@ -192,7 +190,6 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
         onPressed: () async {
-          // ignore: avoid_print
           print("Signing User with Google");
           final user = await GoogleAuthApi().login(context);
           if (user == null) {

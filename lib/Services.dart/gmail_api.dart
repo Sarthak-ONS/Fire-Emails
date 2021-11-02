@@ -9,12 +9,12 @@ class MailAPI {
   getMails(context) async {
     //Provider.of<CurrentUser>(context, listen: false).currentUserEmail!
     try {
-      // Message message = Message();
-      // _gmailApi.users.messages.send(message,
-      //     Provider.of<CurrentUser>(context, listen: false).currentUserEmail!);
-      WatchRequest watchRequest = WatchRequest(topicName: 'sarthak');
-      _gmailApi.users.watch(watchRequest,
-          Provider.of<CurrentUser>(context, listen: false).currentUserEmail!);
+      ListMessagesResponse resh =
+          await _gmailApi.users.messages.list("me", maxResults: 5);
+      for (Message res in resh.messages!) {
+        Message m = await _gmailApi.users.messages.get("me", res.id!);
+        print(m.raw.toString());
+      }
     } catch (e) {
       print(e);
     }

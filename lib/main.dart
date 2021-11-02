@@ -1,11 +1,19 @@
+import 'package:fire_mail/Models/email_model.dart';
 import 'package:fire_mail/Screens/home_screen.dart';
 import 'package:fire_mail/Screens/login_screen.dart';
 import 'package:fire_mail/Screens/select_recipients.dart';
 import 'package:fire_mail/provider_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(EmailModelAdapter());
+  await Hive.openBox<EmailModel>('email_Model');
+
   runApp(const MyApp());
 }
 

@@ -28,7 +28,50 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: const Color(0xff151719),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: const Color(0xff151719),
+        title: Text('Compose Mail'),
+        actions: [
+          IconButton(
+            alignment: Alignment.centerLeft,
+            onPressed: () async {
+              PlatformFile pickedFilePath = await FilePickerAPI().pickFile();
+              setState(() {
+                fileName = pickedFilePath.name;
+                filePath = pickedFilePath.path!;
+              });
+              print(pickedFilePath.name);
+              print(pickedFilePath.path);
+              addAttachments(pickedFilePath.path!);
+              //
+            },
+            icon: const Icon(
+              Icons.attach_email_outlined,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            alignment: Alignment.centerLeft,
+            onPressed: () async {
+              PlatformFile pickedFilePath = await FilePickerAPI().pickFile();
+              setState(() {
+                fileName = pickedFilePath.name;
+                filePath = pickedFilePath.path!;
+              });
+              print(pickedFilePath.name);
+              print(pickedFilePath.path);
+              addAttachments(pickedFilePath.path!);
+              //
+            },
+            icon: const Icon(
+              Icons.send,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
@@ -38,88 +81,145 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
-                  controller: _subController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    filled: true,
+                    enabled: false,
+                    fillColor: const Color(0xff23262B),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff23262B),
+                      ),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff23262B),
+                      ),
+                    ),
+                    labelText:
+                        'From :  ${Provider.of<CurrentUser>(context).currentUserEmail!}',
+                    labelStyle: const TextStyle(
+                      color: Colors.white54,
+                    ),
+                  ),
+                ),
+                TextFormField(
+                  style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    filled: true,
+                    enabled: false,
+                    fillColor: Color(0xff23262B),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.blue,
+                        color: Color(0xff23262B),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.blue,
+                        color: Color(0xff23262B),
                       ),
                     ),
-                    labelText: 'Subject',
+                    labelText: 'To : Recipients are already Selected',
+                    labelStyle: TextStyle(
+                      color: Colors.white54,
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 15.0,
+                TextFormField(
+                  controller: _subController,
+                  style: TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xff23262B),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff23262B),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Color(0xff23262B),
+                      ),
+                    ),
+                    hintText: 'Subject',
+                    hintStyle: TextStyle(
+                      color: Colors.white54,
+                    ),
+                  ),
                 ),
                 TextFormField(
                   controller: _bodyController,
                   maxLines: 10,
+                  style:const  TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xff23262B),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.blue,
+                        color: Color(0xff23262B),
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.blue,
+                        color: Color(0xff23262B),
                       ),
                     ),
-                    labelText: 'Enter The Body of The Email',
+                    hintText: 'Enter The Body of The Email',
+                    hintStyle: TextStyle(
+                      color: Colors.white54,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 15.0,
                 ),
                 Row(
                   children: [
-                    IconButton(
-                      alignment: Alignment.centerLeft,
-                      onPressed: () async {
-                        PlatformFile pickedFilePath =
-                            await FilePickerAPI().pickFile();
-                        setState(() {
-                          fileName = pickedFilePath.name;
-                          filePath = pickedFilePath.path!;
-                        });
-                        print(pickedFilePath.name);
-                        print(pickedFilePath.path);
-                        addAttachments(pickedFilePath.path!);
-                        //
-                      },
-                      icon: const Icon(
-                        Icons.file_copy,
-                        color: Colors.blueAccent,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: IconButton(
+                        alignment: Alignment.centerLeft,
+                        onPressed: () async {
+                          PlatformFile pickedFilePath =
+                              await FilePickerAPI().pickFile();
+                          setState(() {
+                            fileName = pickedFilePath.name;
+                            filePath = pickedFilePath.path!;
+                          });
+                          print(pickedFilePath.name);
+                          print(pickedFilePath.path);
+                          addAttachments(pickedFilePath.path!);
+                          //
+                        },
+                        icon: const Icon(
+                          Icons.attach_email_outlined,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                    Text(fileName),
+                    Text(
+                      fileName,
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ],
                 ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 50)),
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.blueAccent),
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(),
-                    ),
-                  ),
-                  onPressed: sendEmail,
-                  child: const Text(
-                    'Send Email',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                // ElevatedButton(
+                //   style: ButtonStyle(
+                //     padding: MaterialStateProperty.all(
+                //         const EdgeInsets.symmetric(
+                //             vertical: 14, horizontal: 50)),
+                //     backgroundColor:
+                //         MaterialStateProperty.all(Colors.blueAccent),
+                //     shape: MaterialStateProperty.all(
+                //       const RoundedRectangleBorder(),
+                //     ),
+                //   ),
+                //   onPressed: sendEmail,
+                //   child: const Text(
+                //     'Send Email',
+                //     style: TextStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -160,7 +260,6 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
             .email);
       }
     }
-    print(addrs);
 
     final message = Message()
       ..from = Address(
@@ -185,8 +284,17 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
         ),
       );
       SendReport res = await send(message, smtpServer);
-      var x = res.mail;
-      print(x.from);
+      Provider.of<CurrentUser>(context, listen: false).addAEmailToDatabase(
+        body: _bodyController.text,
+        subject: _subController.text,
+        fileList: [
+          filePath,
+        ],
+        add: att,
+      );
+      Provider.of<CurrentUser>(context, listen: false)
+          .addEmailSentCount(addrs.length);
+      print(res.toString());
       _bodyController.clear();
       _subController.clear();
       Navigator.pop(context);

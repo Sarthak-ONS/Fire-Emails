@@ -1,17 +1,17 @@
 // ignore_for_file: avoid_print
 
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
+import 'dart:math';
+
+import 'package:fire_mail/Models/email_model.dart';
 import 'package:fire_mail/Screens/login_screen.dart';
 import 'package:fire_mail/Screens/select_recipients.dart';
-import 'package:fire_mail/Services.dart/file_picker_api.dart';
 import 'package:fire_mail/Services.dart/gmail_api.dart';
 import 'package:fire_mail/Services.dart/google_auth_api.dart';
 import 'package:fire_mail/provider_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'compose_email.dart';
@@ -26,6 +26,12 @@ class HomePageScreen extends StatefulWidget {
 
 class _HomePageScreenState extends State<HomePageScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    Hive.box('email_Model').close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,14 +152,43 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
+  List<Color> colorList = [
+    Colors.red,
+    Colors.black,
+    Colors.green,
+    Colors.cyan,
+    Colors.yellow
+  ];
   Widget buildImages() => SliverToBoxAdapter(
-        child: ListView.builder(
-          primary: false,
-          shrinkWrap: true,
-          itemCount: 20,
-          itemBuilder: (context, index) => ListTile(
-            title: Text('index: $index'),
-          ),
+        child: ValueListenableBuilder<Box<EmailModel>>(
+          valueListenable: Boxes.getEmailModel().listenable(),
+          builder: (context, box, _) {
+            final _random = Random();
+            final emailModel = box.values.toList().cast<EmailModel>();
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: emailModel.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    emailModel[index].body!,
+                  ),
+                  subtitle: Text(
+                    emailModel[index].subject!,
+                  ),
+                  leading: CircleAvatar(
+                    backgroundColor:
+                        colorList[_random.nextInt(colorList.length)],
+                    child: Center(
+                      child: Text(
+                        '${emailModel[index].body!.substring(0, 1)}${emailModel[index].subject!.substring(0, 1)}',
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
         ),
       );
 }

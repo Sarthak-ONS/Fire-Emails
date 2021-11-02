@@ -38,7 +38,8 @@ dependencies:
   file_picker: ^4.1.4
   spreadsheet_decoder: ^2.0.0
   extension_google_sign_in_as_googleapis_auth: ^2.0.4
-  sqflite: ^2.0.0+4
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
   googleapis: ^7.0.0
   mailer: ^5.0.2
   googleapis_auth: ^1.2.0
@@ -53,6 +54,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  hive_generator: ^1.1.1
+  build_runner: ^2.1.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
