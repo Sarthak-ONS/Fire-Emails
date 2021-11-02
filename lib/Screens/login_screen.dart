@@ -5,6 +5,7 @@ import 'package:fire_mail/Services.dart/google_auth_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -186,6 +187,7 @@ class LoginScreen extends StatelessWidget {
             "Login using Google",
             style: TextStyle(
               fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),

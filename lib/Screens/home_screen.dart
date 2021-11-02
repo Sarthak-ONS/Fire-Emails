@@ -7,13 +7,17 @@ import 'package:fire_mail/Screens/login_screen.dart';
 import 'package:fire_mail/Screens/select_recipients.dart';
 import 'package:fire_mail/Services.dart/gmail_api.dart';
 import 'package:fire_mail/Services.dart/google_auth_api.dart';
+import 'package:fire_mail/colors.dart';
 import 'package:fire_mail/provider_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets.dart';
 import 'compose_email.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -140,55 +144,61 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   );
                 },
                 icon: const Icon(
-                  Icons.edit,
+                  Icons.add,
                   color: Colors.blueAccent,
                 ),
               )
             ],
           ),
-          buildImages()
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return ValueListenableBuilder<Box<EmailModel>>(
+                  valueListenable: Boxes.getEmailModel().listenable(),
+                  builder: (context, box, _) {
+                    final emailModel = box.values.toList().cast<EmailModel>();
+                    return ListView.builder(
+                      dragStartBehavior: DragStartBehavior.down,
+                      itemCount: emailModel.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Slidable(
+                          actionPane: const SlidableStrechActionPane(),
+                          actionExtentRatio: 0.25,
+                          child: buildEmailItem(
+                            emailModel[index],
+                          ),
+                          secondaryActions: [
+                            IconSlideAction(
+                              caption: 'Delete',
+                              color: Colors.red,
+                              icon: Icons.delete,
+                              onTap: () {
+                                print("Calling delete");
+                                Provider.of<CurrentUser>(context, listen: false)
+                                    .deleteEmailFromDataBase(emailModel[index]);
+                              },
+                              closeOnTap: true,
+                            )
+                          ],
+                          actions: const [
+                            IconSlideAction(
+                              caption: 'Delete',
+                              color: Colors.red,
+                              icon: Icons.delete,
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+              childCount: 1000, // 1000 list items
+            ),
+          )
         ],
       ),
     );
   }
-
-  List<Color> colorList = [
-    Colors.red,
-    Colors.black,
-    Colors.green,
-    Colors.cyan,
-    Colors.yellow
-  ];
-  Widget buildImages() => SliverToBoxAdapter(
-        child: ValueListenableBuilder<Box<EmailModel>>(
-          valueListenable: Boxes.getEmailModel().listenable(),
-          builder: (context, box, _) {
-            final _random = Random();
-            final emailModel = box.values.toList().cast<EmailModel>();
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: emailModel.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    emailModel[index].body!,
-                  ),
-                  subtitle: Text(
-                    emailModel[index].subject!,
-                  ),
-                  leading: CircleAvatar(
-                    backgroundColor:
-                        colorList[_random.nextInt(colorList.length)],
-                    child: Center(
-                      child: Text(
-                        '${emailModel[index].body!.substring(0, 1)}${emailModel[index].subject!.substring(0, 1)}',
-                      ),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      );
 }

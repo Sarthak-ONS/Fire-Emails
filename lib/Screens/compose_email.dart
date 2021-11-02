@@ -54,17 +54,7 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
           ),
           IconButton(
             alignment: Alignment.centerLeft,
-            onPressed: () async {
-              PlatformFile pickedFilePath = await FilePickerAPI().pickFile();
-              setState(() {
-                fileName = pickedFilePath.name;
-                filePath = pickedFilePath.path!;
-              });
-              print(pickedFilePath.name);
-              print(pickedFilePath.path);
-              addAttachments(pickedFilePath.path!);
-              //
-            },
+            onPressed: sendEmail,
             icon: const Icon(
               Icons.send,
               color: Colors.white,
@@ -147,10 +137,12 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                     ),
                   ),
                 ),
-                TextFormField(
+                TextField(
+                  minLines: 1,
+                  maxLines: 20,
                   controller: _bodyController,
-                  maxLines: 10,
-                  style:const  TextStyle(color: Colors.white),
+                  keyboardType: TextInputType.multiline,
+                  style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
                     filled: true,
                     fillColor: Color(0xff23262B),
@@ -164,62 +156,12 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
                         color: Color(0xff23262B),
                       ),
                     ),
-                    hintText: 'Enter The Body of The Email',
+                    hintText: 'Body',
                     hintStyle: TextStyle(
                       color: Colors.white54,
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: IconButton(
-                        alignment: Alignment.centerLeft,
-                        onPressed: () async {
-                          PlatformFile pickedFilePath =
-                              await FilePickerAPI().pickFile();
-                          setState(() {
-                            fileName = pickedFilePath.name;
-                            filePath = pickedFilePath.path!;
-                          });
-                          print(pickedFilePath.name);
-                          print(pickedFilePath.path);
-                          addAttachments(pickedFilePath.path!);
-                          //
-                        },
-                        icon: const Icon(
-                          Icons.attach_email_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      fileName,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ],
-                ),
-                // ElevatedButton(
-                //   style: ButtonStyle(
-                //     padding: MaterialStateProperty.all(
-                //         const EdgeInsets.symmetric(
-                //             vertical: 14, horizontal: 50)),
-                //     backgroundColor:
-                //         MaterialStateProperty.all(Colors.blueAccent),
-                //     shape: MaterialStateProperty.all(
-                //       const RoundedRectangleBorder(),
-                //     ),
-                //   ),
-                //   onPressed: sendEmail,
-                //   child: const Text(
-                //     'Send Email',
-                //     style: TextStyle(
-                //       fontSize: 18,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -234,6 +176,21 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
         width: 150,
       );
   Future sendEmail() async {
+    print("Composing and Sending Mail");
+    Provider.of<CurrentUser>(context, listen: false).addAEmailToDatabase(
+      body:
+          "The body of an email message is essentially the letter inside of the envelope. Consider how you read a letter you receive in the postal mail. You open the envelope and unfold the paper to view the contents of the message.",
+      subject: "College Admission Issue Enquiry",
+      fileList: [
+        filePath,
+      ],
+      add: [
+        "agarwalsarthak456@gmail.com",
+        "sarthaak1931006@akgec.ac.in",
+        "kpriyanshuse@gmail.com"
+      ],
+    );
+    return;
     //CC Stands For Carbon Copy
     //BCC Stands For Blind Carbon Copy.
     if (Provider.of<CurrentUser>(context, listen: false).recipients!.isEmpty) {

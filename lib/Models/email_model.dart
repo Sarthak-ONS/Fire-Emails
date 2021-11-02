@@ -1,4 +1,3 @@
-import 'package:fire_mail/Models/recipient_model.dart';
 import 'package:hive/hive.dart';
 
 part 'email_model.g.dart';
@@ -16,4 +15,7 @@ class EmailModel extends HiveObject {
 
   @HiveField(3)
   List<String>? listFilePath;
+
+  @HiveField(4)
+  DateTime? time;
 }

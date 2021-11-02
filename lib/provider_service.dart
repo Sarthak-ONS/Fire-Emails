@@ -43,10 +43,17 @@ class CurrentUser extends ChangeNotifier {
       ..body = body
       ..subject = subject
       ..addressList = add
-      ..listFilePath = fileList;
+      ..listFilePath = fileList
+      ..time = DateTime.now();
 
     final box = Boxes.getEmailModel();
     box.add(emailModel);
+    notifyListeners();
+  }
+
+  deleteEmailFromDataBase(EmailModel model) {
+    final box = Boxes.getEmailModel();
+    box.delete(model);
     notifyListeners();
   }
 }
