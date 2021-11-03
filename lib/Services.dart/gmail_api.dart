@@ -9,12 +9,10 @@ class MailAPI {
   getMails(context) async {
     //Provider.of<CurrentUser>(context, listen: false).currentUserEmail!
     try {
-      ListMessagesResponse resh =
-          await _gmailApi.users.messages.list("me", maxResults: 5);
-      for (Message res in resh.messages!) {
-        Message m = await _gmailApi.users.messages.get("me", res.id!);
-        print(m.raw.toString());
-      }
+      final res = _gmailApi.users.labels.get(
+          Provider.of<CurrentUser>(context, listen: false).currentUserEmail!,
+          "  ");
+      print(res);
     } catch (e) {
       print(e);
     }

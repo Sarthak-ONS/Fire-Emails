@@ -178,9 +178,8 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
   Future sendEmail() async {
     print("Composing and Sending Mail");
     Provider.of<CurrentUser>(context, listen: false).addAEmailToDatabase(
-      body:
-          "The body of an email message is essentially the letter inside of the envelope. Consider how you read a letter you receive in the postal mail. You open the envelope and unfold the paper to view the contents of the message.",
-      subject: "College Admission Issue Enquiry",
+      body: _bodyController.text,
+      subject: _subController.text,
       fileList: [
         filePath,
       ],
@@ -190,7 +189,6 @@ class _ComposeEmailScreenState extends State<ComposeEmailScreen> {
         "kpriyanshuse@gmail.com"
       ],
     );
-    return;
     //CC Stands For Carbon Copy
     //BCC Stands For Blind Carbon Copy.
     if (Provider.of<CurrentUser>(context, listen: false).recipients!.isEmpty) {

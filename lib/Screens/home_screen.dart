@@ -38,6 +38,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<CurrentUser>(context, listen: false)
+        .changeEmailCount(Boxes.getEmailModel().values.length);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
@@ -135,7 +142,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
             actions: [
               IconButton(
                 onPressed: () {
-                  // MailAPI().getMails(context);
+                  //MailAPI().getMails(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -157,44 +164,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   valueListenable: Boxes.getEmailModel().listenable(),
                   builder: (context, box, _) {
                     final emailModel = box.values.toList().cast<EmailModel>();
-                    return ListView.builder(
-                      dragStartBehavior: DragStartBehavior.down,
-                      itemCount: emailModel.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Slidable(
-                          actionPane: const SlidableStrechActionPane(),
-                          actionExtentRatio: 0.25,
-                          child: buildEmailItem(
-                            emailModel[index],
-                          ),
-                          secondaryActions: [
-                            IconSlideAction(
-                              caption: 'Delete',
-                              color: Colors.red,
-                              icon: Icons.delete,
-                              onTap: () {
-                                print("Calling delete");
-                                Provider.of<CurrentUser>(context, listen: false)
-                                    .deleteEmailFromDataBase(emailModel[index]);
-                              },
-                              closeOnTap: true,
-                            )
-                          ],
-                          actions: const [
-                            IconSlideAction(
-                              caption: 'Delete',
-                              color: Colors.red,
-                              icon: Icons.delete,
-                            )
-                          ],
-                        );
-                      },
-                    );
+
+                    return buildEmailItem(emailModel[index]);
                   },
                 );
               },
-              childCount: 1000, // 1000 list items
+              childCount: Boxes.getEmailModel().values.length,
             ),
           )
         ],
@@ -202,3 +177,43 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 }
+// ValueListenableBuilder<Box<EmailModel>>(
+//                   valueListenable: Boxes.getEmailModel().listenable(),
+//                   builder: (context, box, _) {
+//                     final emailModel = box.values.toList().cast<EmailModel>();
+//                     return ListView.builder(
+//                       dragStartBehavior: DragStartBehavior.down,
+//                       itemCount: emailModel.length,
+//                       shrinkWrap: true,
+//                       itemBuilder: (context, index) {
+//                         return Slidable(
+//                           actionPane: const SlidableStrechActionPane(),
+//                           actionExtentRatio: 0.25,
+//                           child: buildEmailItem(
+//                             emailModel[index],
+//                           ),
+//                           secondaryActions: [
+//                             IconSlideAction(
+//                               caption: 'Delete',
+//                               color: Colors.red,
+//                               icon: Icons.delete,
+//                               onTap: () {
+//                                 print("Calling delete");
+//                                 Provider.of<CurrentUser>(context, listen: false)
+//                                     .deleteEmailFromDataBase(emailModel[index]);
+//                               },
+//                               closeOnTap: true,
+//                             )
+//                           ],
+//                           actions: const [
+//                             IconSlideAction(
+//                               caption: 'Delete',
+//                               color: Colors.red,
+//                               icon: Icons.delete,
+//                             )
+//                           ],
+//                         );
+//                       },
+//                     );
+//                   },
+//                 )

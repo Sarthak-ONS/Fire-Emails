@@ -13,6 +13,8 @@ class CurrentUser extends ChangeNotifier {
   GoogleSignInAuthentication? googleSignInAuthenticatio;
   int? totalEmailSent = 0;
 
+  int? totalEmailCount = 0;
+
   changeUserDetails(String? name, String? url, String? email, String? token) {
     currentUserName = name;
     currentUserEmail = email;
@@ -34,6 +36,11 @@ class CurrentUser extends ChangeNotifier {
 
   addToRecipientsList(RecipientsModel model) {
     recipients!.add(model);
+    notifyListeners();
+  }
+
+  changeEmailCount(int c) {
+    totalEmailCount = c;
     notifyListeners();
   }
 

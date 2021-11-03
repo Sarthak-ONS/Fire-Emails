@@ -57,13 +57,21 @@ class LoginScreen extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        'Fire Mail',
+                        'FireMail',
                         style: TextStyle(
                           fontSize: 38,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      Text(
+                        '@',
+                        style: TextStyle(
+                          fontSize: 38,
+                          color: Colors.yellow,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
                     ],
                   ),
                 ),
