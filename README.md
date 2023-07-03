@@ -13,7 +13,6 @@ The project helps user to send bulk Emails using their Gmail Account.
 
 <p float="left">
 <img src="https://user-images.githubusercontent.com/57105611/140183153-864cc113-7bef-4e7a-908a-6bbadc380eaf.jpeg" height="448" style="margin: 5px 30px 5px 10px;" >
-<img src="https://user-images.githubusercontent.com/57105611/140183160-90c814ec-56e8-4e3b-a91c-50271a5d88e6.jpeg" height="448" style="margin: 5px 30px 5px 10px;">
  <img src="https://user-images.githubusercontent.com/57105611/140183161-15bbe37d-391f-4590-9b85-8527ba3419ee.jpg" height="448" style="margin: 5px 30px 5px 10px;">
 </p>
  <p float="left">
